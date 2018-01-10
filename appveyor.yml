@@ -37,12 +37,14 @@ build_script:
   - IF NOT EXIST C:\tmp MKDIR C:\tmp
   - SET SQUIRREL_TEMP=C:\tmp
   - IF [%TASK%]==[installer] (
-      IF [%APPVEYOR_REPO_BRANCH:~-9%]==[-releases] SET CREATE_INSTALLER=true &
-      IF [%APPVEYOR_REPO_BRANCH%]==[jr-test-installer-creation-for-non-release-branch] SET CREATE_INSTALLER=true &
-      IF [%CREATE_INSTALLER%]==[true] (
+      IF [%APPVEYOR_REPO_BRANCH:~-9%]==[-releases] (
         script\build.cmd --code-sign --compress-artifacts --create-windows-installer
       ) ELSE (
-        ECHO Skipping installer and Atom build on non-release branch
+        IF [%APPVEYOR_REPO_BRANCH%]==[jr-test-installer-creation-for-non-release-branch] (
+          script\build.cmd --code-sign --compress-artifacts --create-windows-installer
+        ) ELSE (
+          ECHO Skipping installer and Atom build on non-release branch
+        )
       )
     ) ELSE (
       ECHO Skipping installer build on non-installer build matrix row &&
