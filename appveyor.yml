@@ -27,6 +27,7 @@ matrix:
       TASK: test
 
 install:
+  - ECHO APPVEYOR_REPO_BRANCH is '%APPVEYOR_REPO_BRANCH%'
   - IF NOT EXIST %TEST_JUNIT_XML_ROOT% MKDIR %TEST_JUNIT_XML_ROOT%
   - SET PATH=C:\Program Files\Atom\resources\cli;%PATH%
   - ps: Install-Product node $env:NODE_VERSION $env:PLATFORM
